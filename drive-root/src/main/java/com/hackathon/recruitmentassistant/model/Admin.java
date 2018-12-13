@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="admin")
 @EntityListeners(AuditingEntityListener.class)
@@ -32,6 +35,7 @@ public class Admin {
 	
 	@ManyToOne
 	@JoinColumn(name="drive_id",nullable=false)
+	@JsonBackReference
 	public Drive getDrive() {
 		return drive;
 	}

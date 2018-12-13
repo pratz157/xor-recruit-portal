@@ -1,11 +1,11 @@
 package com.hackathon.recruitmentassistant.model;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,9 +15,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="drive")
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(
+        value = {"createdAt", "updatedAt"},
+        allowGetters = true
+)
 public class Drive {
 	
 	private long id;
@@ -26,7 +36,7 @@ public class Drive {
 	private Date updatedAt;
 	private Skill skill;
 	private Set<Candidate> candidates;
-	private Set<Admin> pannel;
+	private Set<Admin> panel;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,6 +76,7 @@ public class Drive {
 	
 	@OneToOne
 	@JoinColumn(name="skill_id")
+	@JsonIgnore
 	public Skill getSkill() {
 		return skill;
 	}
@@ -74,6 +85,7 @@ public class Drive {
 	}
 	
 	@OneToMany(mappedBy="drive")
+	@JsonManagedReference
 	public Set<Candidate> getCandidates() {
 		return candidates;
 	}
@@ -82,11 +94,12 @@ public class Drive {
 	}
 	
 	@OneToMany(mappedBy="drive")
-	public Set<Admin> getPannel() {
-		return pannel;
+	@JsonManagedReference
+	public Set<Admin> getPanel() {
+		return panel;
 	}
-	public void setPannel(Set<Admin> pannel) {
-		this.pannel = pannel;
+	public void setPanel(Set<Admin> pannel) {
+		this.panel = pannel;
 	}
 	
 	

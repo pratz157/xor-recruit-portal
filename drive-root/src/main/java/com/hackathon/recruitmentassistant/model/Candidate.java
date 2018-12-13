@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="candidate")
 @EntityListeners(AuditingEntityListener.class)
@@ -26,9 +28,12 @@ public class Candidate {
 	private Date createdAt;
 	private Date updatedAt;
 	private Drive drive;
+	private String status;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="drive_id",nullable=false)
+	@JsonBackReference
 	public Drive getDrive() {
 		return drive;
 	}
@@ -79,6 +84,14 @@ public class Candidate {
 	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
+	}
+	
+	@Column(name="status", nullable= true, columnDefinition="varchar(255) default 'In Progress'")
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	@Override
