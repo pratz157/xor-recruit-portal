@@ -55,4 +55,9 @@ public class DriveController {
 		map.put("adminID", driveID);
     	return map;
 	}
+
+	@GetMapping("/candidate/status")
+	public void getCandidateStatus(@RequestHeader(value = "candidateName") String candidateName) {
+		
+	}
 }
