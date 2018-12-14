@@ -1,9 +1,12 @@
 package com.hackathon.recruitmentassistant.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.hackathon.recruitmentassistant.dto.AdminParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,8 +49,10 @@ public class DriveController {
 
 
     @PostMapping("/register")
-	public void registerUser(@RequestBody Admin adminUser) {
-    	//todo a return bean which has id.
-    	driveService.registerUser(adminUser);
+	public Map registerUser(@RequestBody AdminParams adminUser) {
+		Long  driveID = driveService.registerUser(adminUser);
+		Map<String, Object> map = new HashMap<>();
+		map.put("adminID", driveID);
+    	return map;
 	}
 }

@@ -16,8 +16,6 @@ public interface DriveService extends CommonCRUDService<Drive>{
 	
 	Admin getAdminOnLogin(String uName);
 
-	void registerUser(Admin adminUser);
-
 	Long registerUser(AdminParams adminUser);
 }
  
