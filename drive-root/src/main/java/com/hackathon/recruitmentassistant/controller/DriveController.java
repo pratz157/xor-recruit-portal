@@ -44,4 +44,10 @@ public class DriveController {
     	return driveService.getAdminOnLogin(userName);
     }
 
+
+    @PostMapping("/register")
+	public void registerUser(@RequestBody Admin adminUser) {
+    	//todo a return bean which has id.
+    	driveService.registerUser(adminUser);
+	}
 }

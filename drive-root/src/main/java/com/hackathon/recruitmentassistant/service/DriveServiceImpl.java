@@ -1,7 +1,9 @@
 package com.hackathon.recruitmentassistant.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.hackathon.recruitmentassistant.dto.AdminParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +34,9 @@ public class DriveServiceImpl implements DriveService{
 	private SkillDao skillDao;
 
 	@Override
-	public Drive save(Drive e) {
+	public Optional<Drive> save(Drive e) {
 		
-		Drive drive = driveDao.save(e);
+		Optional<Drive> drive = driveDao.save(e);
 
 		for(Candidate cand: e.getCandidates()){
 			cand.setDrive(drive);
@@ -76,5 +78,22 @@ public class DriveServiceImpl implements DriveService{
 	public Admin getAdminOnLogin(String emailId) {
 		return adminDao.getAdminByEmailId(emailId);
 	}
+
+	@Override
+	public Long registerUser(AdminParams adminUser) {
+		if(adminUser != null && adminUser.getRole() != null && adminUser.getEmailId() != null) {
+			Admin user = new Admin();
+			Optional<Drive> currentDrive = driveDao.findById(adminUser.getDriveID());
+			user.setPassword("password123");
+			user.setEmailId(adminUser.getEmailId());
+			user.setRole(adminUser.getRole());
+			user.setDrive(currentDrive);
+			adminDao.save(user);
+			return user.getId();
+		}
+		return null;
+	}
+
+
 
 }

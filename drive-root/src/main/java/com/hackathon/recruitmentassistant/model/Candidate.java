@@ -1,6 +1,7 @@
 package com.hackathon.recruitmentassistant.model;
 
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,17 +28,17 @@ public class Candidate {
 	private String emailId;
 	private Date createdAt;
 	private Date updatedAt;
-	private Drive drive;
+	private Optional<Drive> drive;
 	private String status;
 	
 	
 	@ManyToOne
 	@JoinColumn(name="drive_id",nullable=false)
 	@JsonBackReference
-	public Drive getDrive() {
+	public Optional<Drive> getDrive() {
 		return drive;
 	}
-	public void setDrive(Drive drive) {
+	public void setDrive(Optional<Drive> drive) {
 		this.drive = drive;
 	}
 	
