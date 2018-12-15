@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -28,21 +29,23 @@ public class Candidate {
 	private String emailId;
 	private Date createdAt;
 	private Date updatedAt;
-	private Optional<Drive> drive;
+	private Drive drive;
 	private String status;
+	private Admin admin;
+	
 	
 	
 	@ManyToOne
 	@JoinColumn(name="drive_id",nullable=false)
 	@JsonBackReference
-	public Optional<Drive> getDrive() {
+	public Drive getDrive() {
 		return drive;
 	}
-	public void setDrive(Optional<Drive> drive) {
+	public void setDrive(Drive drive) {
 		this.drive = drive;
 	}
 	
-	@Column(name = "created_at", nullable = false)
+	@Column(name = "created_at", nullable = true)
     @CreatedDate
 	public Date getCreatedAt() {
 		return createdAt;
@@ -51,7 +54,7 @@ public class Candidate {
 		this.createdAt = createdAt;
 	}
 	
-	@Column(name = "updated_at", nullable = false)
+	@Column(name = "updated_at", nullable = true)
     @CreatedDate
 	public Date getUpdatedAt() {
 		return updatedAt;
@@ -95,14 +98,23 @@ public class Candidate {
 		this.status = status;
 	}
 	
+	@OneToOne
+	@JoinColumn(name="admin_id",nullable=true)
+	//@JsonBackReference
+	public Admin getAdmin() {
+		return admin;
+	}
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -112,6 +124,11 @@ public class Candidate {
 		if (getClass() != obj.getClass())
 			return false;
 		Candidate other = (Candidate) obj;
+		if (emailId == null) {
+			if (other.emailId != null)
+				return false;
+		} else if (!emailId.equals(other.emailId))
+			return false;
 		if (id != other.id)
 			return false;
 		return true;

@@ -2,15 +2,21 @@ package com.hackathon.recruitmentassistant.model;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,6 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="admin")
@@ -32,16 +39,23 @@ public class Admin {
 	private Date createdAt;
 	private Date updatedAt;
 	private Skill skill;
-	private Optional<Drive> drive;
+	private Set<Drive> drives;
 	
-	@ManyToOne
-	@JoinColumn(name="drive_id")
+	
+	@ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            })
+    @JoinTable(name = "admin_drive_assoc",
+            joinColumns = { @JoinColumn(name = "admin_id") },
+            inverseJoinColumns = { @JoinColumn(name = "drive_id",nullable=true) })
 	@JsonBackReference
-	public Optional<Drive> getDrive() {
-		return drive;
+	public Set<Drive> getDrives() {
+		return drives;
 	}
-	public void setDrive(Optional<Drive> drive) {
-		this.drive = drive;
+	public void setDrives(Set<Drive> drive) {
+		this.drives = drive;
 	}
 	
 	@OneToOne
@@ -52,7 +66,7 @@ public class Admin {
 	public void setSkill(Skill skill) {
 		this.skill = skill;
 	}
-	@Column(name = "updated_at", nullable = false)
+	@Column(name = "updated_at", nullable = true)
     @CreatedDate
 	public Date getUpdatedAt() {
 		return updatedAt;
@@ -94,7 +108,7 @@ public class Admin {
 		this.emailId = emailId;
 	}
 	
-	@Column(name = "created_at", nullable = false)
+	@Column(name = "created_at", nullable = true)
     @CreatedDate
 	public Date getCreatedAt() {
 		return createdAt;
