@@ -1,0 +1,11 @@
+.modal-content{
+    -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+    box-shadow: none !important;
+    background-color: transparent;
+    margin-left: 30%;
+}
+
+.mt-6{
+    margin-top: 5rem!important;
+}

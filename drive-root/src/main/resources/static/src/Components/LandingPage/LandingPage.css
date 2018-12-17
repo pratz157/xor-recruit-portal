@@ -1,0 +1,23 @@
+.logoImage{
+    height: 36px;
+}
+
+.bgWhite{
+    background-color: aliceblue !important;
+}
+
+
+.navbar {
+    background-color: transparent;
+    z-index: 1;
+}
+@media only screen and (max-width: 768px) {
+    .navbar {
+        background-color: #1C2331;
+    }
+}
+@media (min-width: 768px) {
+    .view {
+        overflow: visible;
+    }
+}
